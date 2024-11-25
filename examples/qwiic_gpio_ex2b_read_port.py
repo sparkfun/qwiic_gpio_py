@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -----------------------------------------------------------------------------
-# qwiic_gpio_ex3.py
+# qwiic_gpio_ex2b.py
 #
 
-# Simple Example for the Qwiic GPIO Device, reads every GPIO
+# This script allows the user to read the status of all 8 GPIO simultaneously
 # ------------------------------------------------------------------------
 #
 # Written by  SparkFun Electronics, May 2019
@@ -37,10 +37,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 # ==================================================================================
-# Example 1
-#
 
-from __future__ import print_function
 import qwiic_gpio
 import time
 import sys
@@ -48,7 +45,7 @@ import sys
 
 def runExample():
 
-    print("\nSparkFun Qwiic GPIO Example 3\n")
+    print("\nSparkFun Qwiic GPIO Example 2b\n")
     myGPIO = qwiic_gpio.QwiicGPIO()
 
     if myGPIO.isConnected() == False:
@@ -57,49 +54,19 @@ def runExample():
         return
 
     myGPIO.begin()
-    myGPIO.mode_0 = myGPIO.GPIO_IN
-    myGPIO.mode_1 = myGPIO.GPIO_IN
-    myGPIO.mode_2 = myGPIO.GPIO_IN
-    myGPIO.mode_3 = myGPIO.GPIO_IN
-    myGPIO.mode_4 = myGPIO.GPIO_IN
-    myGPIO.mode_5 = myGPIO.GPIO_IN
-    myGPIO.mode_6 = myGPIO.GPIO_IN
-    myGPIO.mode_7 = myGPIO.GPIO_IN
-    myGPIO.setMode()
-
-    myGPIO.inversion_0 = myGPIO.INVERT
-    myGPIO.inversion_1 = myGPIO.NO_INVERT
-    myGPIO.inversion_2 = myGPIO.INVERT
-    myGPIO.inversion_3 = myGPIO.NO_INVERT
-    myGPIO.inversion_4 = myGPIO.INVERT
-    myGPIO.inversion_5 = myGPIO.NO_INVERT
-    myGPIO.inversion_6 = myGPIO.INVERT
-    myGPIO.inversion_7 = myGPIO.NO_INVERT
-    myGPIO.setInversion()
+    myGPIO.pinModePort( [myGPIO.GPIO_IN] * myGPIO.NUM_GPIO ) # pass in a list of 8 GPIO_IN values
 
     while True:
-        myGPIO.getGPIO()  # This function updates each in_status_x variable
-        print("GPIO 0:", end=" ")
-        print(myGPIO.in_status_0, end=" ")
-        print("GPIO 1:", end=" ")
-        print(myGPIO.in_status_1, end=" ")
-        print("GPIO 2:", end=" ")
-        print(myGPIO.in_status_2, end=" ")
-        print("GPIO 3:", end=" ")
-        print(myGPIO.in_status_3, end=" ")
-        print("GPIO 4:", end=" ")
-        print(myGPIO.in_status_4, end=" ")
-        print("GPIO 5:", end=" ")
-        print(myGPIO.in_status_5, end=" ")
-        print("GPIO 6:", end=" ")
-        print(myGPIO.in_status_6, end=" ")
-        print("GPIO 7:", end=" ")
-        print(myGPIO.in_status_7)
+        portValues = myGPIO.digitalReadPort()
+
+        for i in range(myGPIO.NUM_GPIO):
+            print("GPIO " + str(i) + ": " + ("HIGH" if portValues[i] == myGPIO.GPIO_HI else "LOW") )
+
         time.sleep(.25)
 
 if __name__ == '__main__':
     try:
         runExample()
     except (KeyboardInterrupt, SystemExit) as exErr:
-        print("\nEnding Example 1")
+        print("\nEnding Example 2b")
         sys.exit(0)

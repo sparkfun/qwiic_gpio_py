@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 #-----------------------------------------------------------------------------
-# qwiic_gpio_ex1.py
+# qwiic_gpio_ex1b.py
 #
-# Simple Example for the Qwiic GPIO Device, toggles GPIO 0 on and off.
+# This script flips all 8 outputs on and off every second.
 #------------------------------------------------------------------------
 #
 # Written by  SparkFun Electronics, May 2019
@@ -36,13 +36,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 # SOFTWARE.
 #==================================================================================
-# Example 1
-#
 
-from __future__ import print_function
 import qwiic_gpio
 import time
 import sys
+
+# This function is used to toggle the GPIO pin settings in a list of GPIO_HI or GPIO_LO
+def flipGPIO( gpioConfig ):
+    for i in range(len(gpioConfig)):
+        if gpioConfig[i] == qwiic_gpio.QwiicGPIO.GPIO_HI:
+            gpioConfig[i] = qwiic_gpio.QwiicGPIO.GPIO_LO
+        else:
+            gpioConfig[i] = qwiic_gpio.QwiicGPIO.GPIO_HI
 
 def runExample():
 
@@ -55,40 +60,15 @@ def runExample():
         return
 
     myGPIO.begin()
-    myGPIO.mode_0 = myGPIO.GPIO_OUT
-    myGPIO.mode_1 = myGPIO.GPIO_OUT
-    myGPIO.mode_2 = myGPIO.GPIO_OUT
-    myGPIO.mode_3 = myGPIO.GPIO_OUT
-    myGPIO.mode_4 = myGPIO.GPIO_OUT
-    myGPIO.mode_5 = myGPIO.GPIO_OUT
-    myGPIO.mode_6 = myGPIO.GPIO_OUT
-    myGPIO.mode_7 = myGPIO.GPIO_OUT
-    myGPIO.setMode()
+    myGPIO.pinModePort( [ myGPIO.GPIO_OUT] * myGPIO.NUM_GPIO ) # Set all 8 pins to output
+
+    gpioConfig = [ myGPIO.GPIO_HI, myGPIO.GPIO_LO, myGPIO.GPIO_HI, myGPIO.GPIO_LO, myGPIO.GPIO_HI, myGPIO.GPIO_LO, myGPIO.GPIO_HI, myGPIO.GPIO_LO ]
 
     while True:
-        myGPIO.out_status_0 = myGPIO.GPIO_HI
-        myGPIO.out_status_1 = myGPIO.GPIO_HI
-        myGPIO.out_status_2 = myGPIO.GPIO_HI
-        myGPIO.out_status_3 = myGPIO.GPIO_HI
-        myGPIO.out_status_4 = myGPIO.GPIO_HI
-        myGPIO.out_status_5 = myGPIO.GPIO_HI
-        myGPIO.out_status_6 = myGPIO.GPIO_HI
-        myGPIO.out_status_7 = myGPIO.GPIO_HI
-        myGPIO.setGPIO()
-        print("set hi")
+        print("Writing new GPIO port outputs!")
+        myGPIO.digitalWritePort( gpioConfig )
+        flipGPIO( gpioConfig )
         time.sleep(1)
-        myGPIO.out_status_0 = myGPIO.GPIO_LO
-        myGPIO.out_status_1 = myGPIO.GPIO_LO
-        myGPIO.out_status_2 = myGPIO.GPIO_LO
-        myGPIO.out_status_3 = myGPIO.GPIO_LO
-        myGPIO.out_status_4 = myGPIO.GPIO_LO
-        myGPIO.out_status_5 = myGPIO.GPIO_LO
-        myGPIO.out_status_6 = myGPIO.GPIO_LO
-        myGPIO.out_status_7 = myGPIO.GPIO_LO
-        myGPIO.setGPIO()
-        print("set lo")
-        time.sleep(1)
-
 
 if __name__ == '__main__':
     try:

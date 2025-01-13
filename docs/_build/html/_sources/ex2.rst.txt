@@ -1,7 +1,0 @@
-
-
-Example 2
------------------------------------
-.. literalinclude:: ../examples/qwiic_gpio_ex2.py
-    :caption: examples/qwiic_gpio_ex2.py
-    :linenos:

@@ -31,7 +31,7 @@ New to qwiic? Take a look at the entire [SparkFun qwiic ecosystem](https://www.s
 
 This Python package supports the following SparkFun qwiic products on Python, MicroPython and Circuit python. 
 
-* [SparkFun GPIO Expander Sensor - GPIO](http://www.sparkfun.com/qwiic)
+* [SparkFun GPIO Expander - GPIO](https://www.sparkfun.com/sparkfun-qwiic-gpio.html)
 
 ### Supported Platforms
 
